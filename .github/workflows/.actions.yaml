@@ -1,0 +1,46 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  upload-spec:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: true
+          repository: jack-hutchinson-cko/workflow-template
+          token: ${{ secrets.PAT }}
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: specification
+          path: src/*
+        
+  publish-spec:
+    runs-on: ubuntu-latest
+    needs: upload-spec
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: specification
+          path: spec
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: jack-hutchinson-cko/workflow-target
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ secrets.PAT }}
+          path: src
+          
+      - name: Commit spec
+        working-directory: src
+        run: |
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
+          git branch -m "TEAM_NAME_HERE"
+          cp -a ../spec/* src/
+          git add .
+          git commit -m 'Publish new API Specification'
+          git push origin HEAD
