@@ -30,6 +30,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: checkout/checkout-api-reference
+          token: ${{ secrets.ACCESS_TOKEN }}
           path: src
           
       - name: Commit Api specification
