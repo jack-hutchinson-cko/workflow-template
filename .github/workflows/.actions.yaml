@@ -11,7 +11,7 @@ jobs:
         with:
           persist-credentials: true
           repository: jack-hutchinson-cko/workflow-template
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.ACCESS_TOKEN }}
       
       - uses: actions/upload-artifact@v2
         with:
@@ -32,7 +32,7 @@ jobs:
         with:
           repository: checkout/checkout-api-reference
           ref: ${{ github.event.pull_request.head.sha }}
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.ACCESS_TOKEN }}
           path: src
           
       - name: Commit spec
@@ -47,7 +47,7 @@ jobs:
 
       - uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.PAT}}
+          github-token: ${{secrets.ACCESS_TOKEN}}
           script: |
             await github.pulls.create({
               owner: 'checkout',
