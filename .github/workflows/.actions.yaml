@@ -51,7 +51,7 @@ jobs:
               owner: 'checkout',
               repo: 'checkout-api-reference',
               head: "test-branch-ignore-me",
-              base: 'main',
+              base: 'master',
               title: "Auto: Update API Specification"
             });
 
