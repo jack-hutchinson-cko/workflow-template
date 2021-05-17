@@ -11,7 +11,6 @@ jobs:
         with:
           persist-credentials: true
           repository: jack-hutchinson-cko/workflow-template
-          token: ${{ secrets.ACCESS_TOKEN }}
       
       - uses: actions/upload-artifact@v2
         with:
@@ -27,18 +26,16 @@ jobs:
           name: specification
           path: spec
 
-      - name: Checkout
+      - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
         with:
           repository: checkout/checkout-api-reference
-          ref: ${{ github.event.pull_request.head.sha }}
-          token: ${{ secrets.ACCESS_TOKEN }}
           path: src
           
-      - name: Commit spec
+      - name: Commit Api specification
         working-directory: src
         run: |
-          git config user.email "jack.hutchinson@checkout.com" && git config user.name "Jack Hutchinson"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
           git branch -m "test-branch-ignore-me"
           cp -a ../spec/* spec/test
           git add .
