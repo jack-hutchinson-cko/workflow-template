@@ -33,10 +33,10 @@ jobs:
           repository: jack-hutchinson-cko/workflow-target
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ secrets.PAT }}
-          # path: src
+          path: src
           
       - name: Commit spec
-        # working-directory: src
+        working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
           git branch -m "TEAM_NAME_HERE"
