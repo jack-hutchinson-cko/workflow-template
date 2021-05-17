@@ -30,7 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: jack-hutchinson-cko/workflow-target
+          repository: checkout/checkout-api-reference
           ref: ${{ github.event.pull_request.head.sha }}
           token: ${{ secrets.PAT }}
           path: src
@@ -39,8 +39,8 @@ jobs:
         working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
-          git branch -m "TEAM_NAME_HERE"
-          cp -a ../spec/* src/
+          git branch -m "test-branch-ignore-me"
+          cp -a ../spec/* spec/test
           git add .
           git commit -m 'Publish new API Specification'
           git push origin HEAD
@@ -50,9 +50,9 @@ jobs:
           github-token: ${{secrets.PAT}}
           script: |
             await github.pulls.create({
-              owner: 'jack-hutchinson-cko',
-              repo: 'workflow-target',
-              head: "TEAM_NAME_HERE",
+              owner: 'checkout',
+              repo: 'checkout-api-reference',
+              head: "test-branch-ignore-me",
               base: 'main',
               title: "Auto: Update API Specification"
             });
