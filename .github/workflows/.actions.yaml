@@ -44,3 +44,17 @@ jobs:
           git add .
           git commit -m 'Publish new API Specification'
           git push origin HEAD
+
+      - uses: actions/github-script@v4
+        with:
+          github-token: ${{secrets.PAT}}
+          script: |
+            await github.pulls.create({
+              owner: 'jack-hutchinson-cko',
+              repo: 'workflow-target',
+              head: "TEAM_NAME_HERE",
+              base: 'main',
+              title: "Do something"
+            });
+
+            
