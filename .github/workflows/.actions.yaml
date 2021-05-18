@@ -37,7 +37,7 @@ jobs:
         working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
-          git branch -m "test-branch-ignore-me"
+          git branch -m "SRC_REPO-branch-name"
           cp -a ../spec/* spec/test
           git add .
           git commit -m 'Publish new API Specification'
@@ -50,9 +50,9 @@ jobs:
             await github.pulls.create({
               owner: 'checkout',
               repo: 'checkout-api-reference',
-              head: "test-branch-ignore-me",
+              head: "SRC_REPO-branch-name",
               base: 'master',
-              title: "Auto: Update API Specification"
+              title: "SOURCE_REPO_NAME: Update API Specification"
             });
 
             
