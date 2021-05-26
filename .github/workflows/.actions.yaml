@@ -50,7 +50,7 @@ jobs:
             await github.pulls.create({
               owner: 'jack-hutchinson-cko',
               repo: 'api-reference',
-              head: "SRC_REPO-branch-name",
+              head: "PRISM_Api-Spec",
               base: 'main',
               title: "PRISM: Update API Specification"
             });
