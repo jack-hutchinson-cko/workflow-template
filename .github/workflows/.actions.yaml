@@ -37,7 +37,7 @@ jobs:
         working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
-          git branch -m "SRC_REPO-branch-name"
+          git branch -m "PRISM_Api-Spec"
           rsync -a ../spec/* spec/
           git add .
           git commit -m 'Publish new API Specification'
@@ -52,7 +52,5 @@ jobs:
               repo: 'api-reference',
               head: "SRC_REPO-branch-name",
               base: 'master',
-              title: "SOURCE_REPO_NAME: Update API Specification"
+              title: "PRISM: Update API Specification"
             });
-
-            
