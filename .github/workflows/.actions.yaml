@@ -51,6 +51,6 @@ jobs:
               owner: 'jack-hutchinson-cko',
               repo: 'api-reference',
               head: "SRC_REPO-branch-name",
-              base: 'master',
+              base: 'main',
               title: "PRISM: Update API Specification"
             });
