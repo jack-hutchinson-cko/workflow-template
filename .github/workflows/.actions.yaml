@@ -15,7 +15,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: specification
-          path: src/*
+          path: spec/*
         
   publish-spec:
     runs-on: ubuntu-latest
@@ -29,7 +29,7 @@ jobs:
       - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
         with:
-          repository: checkout/checkout-api-reference
+          repository: jack-hutchinson-cko/api-reference
           token: ${{ secrets.ACCESS_TOKEN }}
           path: src
           
@@ -38,7 +38,7 @@ jobs:
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
           git branch -m "SRC_REPO-branch-name"
-          cp -a ../spec/* spec/test
+          rsync -a ../spec/* spec/
           git add .
           git commit -m 'Publish new API Specification'
           git push origin HEAD
@@ -48,8 +48,8 @@ jobs:
           github-token: ${{secrets.ACCESS_TOKEN}}
           script: |
             await github.pulls.create({
-              owner: 'checkout',
-              repo: 'checkout-api-reference',
+              owner: 'jack-hutchinson-cko',
+              repo: 'api-reference',
               head: "SRC_REPO-branch-name",
               base: 'master',
               title: "SOURCE_REPO_NAME: Update API Specification"
