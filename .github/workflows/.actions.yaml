@@ -26,10 +26,13 @@ jobs:
           name: specification
           path: src_spec
 
+      - name: List
+        run: ls
+
       - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
         with:
-          repository: jack-hutchinson-cko/api-reference
+          repository: checkout/checkout-api-reference
           ref: development
           token: ${{ secrets.ACCESS_TOKEN }}
           path: src
