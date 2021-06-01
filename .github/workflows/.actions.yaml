@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - test-branch-name
 
 jobs:
   upload-spec:
@@ -11,11 +11,12 @@ jobs:
         with:
           persist-credentials: true
           repository: jack-hutchinson-cko/workflow-template
+          ref: test-branch-name
       
       - uses: actions/upload-artifact@v2
         with:
           name: specification
-          path: spec/*
+          path: spec/
         
   publish-spec:
     runs-on: ubuntu-latest
@@ -25,9 +26,6 @@ jobs:
         with:
           name: specification
           path: src_spec
-
-      - name: List
-        run: ls
 
       - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
@@ -42,7 +40,7 @@ jobs:
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
           git branch -m "PRISM/Api-Spec"
-          rsync -a ../src_spec/* spec/
+          rsync -a ../src_spec/ spec/
           git add .
           git commit -m 'Publish new API Specification'
           git push origin HEAD
