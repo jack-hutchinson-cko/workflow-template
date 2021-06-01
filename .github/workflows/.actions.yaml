@@ -29,7 +29,8 @@ jobs:
       - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
         with:
-          repository: jack-hutchinson-cko/api-reference
+          repository: checkout/checkout-api-reference
+          ref: development
           token: ${{ secrets.ACCESS_TOKEN }}
           path: src
           
@@ -37,7 +38,7 @@ jobs:
         working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
-          git branch -m "PRISM_Api-Spec"
+          git branch -m "PRISM/Api-Spec"
           rsync -a ../spec/* spec/
           git add .
           git commit -m 'Publish new API Specification'
@@ -48,9 +49,9 @@ jobs:
           github-token: ${{secrets.ACCESS_TOKEN}}
           script: |
             await github.pulls.create({
-              owner: 'jack-hutchinson-cko',
-              repo: 'api-reference',
-              head: "PRISM_Api-Spec",
-              base: 'main',
+              owner: 'checkout',
+              repo: 'checkout-api-reference',
+              head: "PRISM/Api-Spec",
+              base: 'development',
               title: "PRISM: Update API Specification"
             });
