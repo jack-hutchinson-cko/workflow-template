@@ -29,7 +29,7 @@ jobs:
       - name: Fetch Checkout Api Reference repository
         uses: actions/checkout@v2
         with:
-          repository: checkout/checkout-api-reference
+          repository: jack-hutchinson-cko/api-reference
           ref: development
           token: ${{ secrets.ACCESS_TOKEN }}
           path: src
