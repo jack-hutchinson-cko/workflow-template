@@ -1,22 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
 on:
   push:
     branches:
-      - test-branch-name
+      - 'master'
 
 jobs:
   upload-spec:
     runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: true
-          repository: jack-hutchinson-cko/workflow-template
-          ref: test-branch-name
-      
+    steps:         
+      - uses: actions/checkout@v2      
+              
+      - name: Move Team files to directory
+        run: |
+          echo ********** Created an empty folder ************
+          mkdir newspec
+          echo ********** Copying over what we need into the new folder ************
+          mkdir -p newspec/components/schemas
+          cp -r spec/components/schemas/TEAM newspec/components/schemas
+          mkdir -p newspec/paths
+          cp spec/paths/TEAM*.* newspec/paths          
+          echo ********** Listing contents of newspec/ ************
+          ls spec/*/**          
+          echo ********** Ready to upload specs ************
+          
       - uses: actions/upload-artifact@v2
         with:
           name: specification
-          path: spec/
+          path: newspec/
         
   publish-spec:
     runs-on: ubuntu-latest
@@ -32,14 +43,14 @@ jobs:
         with:
           repository: checkout/checkout-api-reference
           ref: development
-          token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ secrets.PAT }}
           path: src
           
       - name: Commit Api specification
         working-directory: src
         run: |
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com" && git config user.name "$GITHUB_ACTOR"
-          git branch -m "PRISM/Api-Spec"
+          git branch -m "TEAM/Api-Spec"
           rsync -a ../src_spec/ spec/
           git add .
           git commit -m 'Publish new API Specification'
@@ -47,12 +58,12 @@ jobs:
 
       - uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.ACCESS_TOKEN}}
+          github-token: ${{secrets.PAT}}
           script: |
             await github.pulls.create({
               owner: 'checkout',
               repo: 'checkout-api-reference',
-              head: "PRISM/Api-Spec",
+              head: "TEAM/Api-Spec",
               base: 'development',
-              title: "PRISM: Update API Specification"
+              title: "TEAM: Update API Specification"
             });
